@@ -2,26 +2,34 @@ import 'package:fuzzy_search/fuzzy_search.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('Simple Matching Tests', () {
+  group('Simple Matching Tests', () {
     var inputs = [
-      'source/string.swift',
-      'source/test/regression/graph.swift',
+      ['string', 'source/string.swift'],
+      ['string', 'source/test/regression/graph.swift'],
     ];
 
-    for (var i in inputs) {
-      expect(fuzzySearch(i, 'string'), isNotNull);
+    for (var testData in inputs) {
+      var needle = testData[0];
+      var hay = testData[1];
+      test('$hay - $needle', () {
+        expect(fuzzySearch(hay, needle), isNotNull);
+      });
     }
   });
 
-  test('Simple Failing Tests', () {
+  group('Simple Failing Tests', () {
     var inputs = [
-      'graph.swift',
-      'source/strinf.swift',
-      'small',
+      ['string', 'graph.swift'],
+      ['string', 'source/strinf.swift'],
+      ['string', 'small'],
     ];
 
-    for (var i in inputs) {
-      expect(fuzzySearch(i, 'string'), isNull);
+    for (var testData in inputs) {
+      var needle = testData[0];
+      var hay = testData[1];
+      test('$hay - $needle', () {
+        expect(fuzzySearch(hay, needle), isNull);
+      });
     }
   });
 }
