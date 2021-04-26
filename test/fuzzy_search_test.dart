@@ -9,7 +9,7 @@ void main() {
     ];
 
     for (var i in inputs) {
-      expect(fuzzySearch(i, 'string'), isTrue);
+      expect(fuzzySearch(i, 'string'), isNotNull);
     }
   });
 
@@ -20,7 +20,7 @@ void main() {
     ];
 
     for (var i in inputs) {
-      expect(fuzzySearch(i, 'string'), isFalse);
+      expect(fuzzySearch(i, 'string'), isNull);
     }
   });
 }

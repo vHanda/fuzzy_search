@@ -1,17 +1,20 @@
-bool fuzzySearch(String base, String needle) {
+List<int>? fuzzySearch(String base, String needle) {
   if (needle.isEmpty) {
-    return true;
+    return [];
   }
 
+  var indexes = <int>[];
   var remainder = String.fromCharCodes(needle.codeUnits);
-  for (var char in base.codeUnits) {
+  for (var i = 0; i < base.codeUnits.length; i++) {
+    var char = base.codeUnits[i];
     if (char == remainder.codeUnits.first) {
       remainder = String.fromCharCodes(remainder.codeUnits, 1);
+      indexes.add(i);
       if (remainder.isEmpty) {
-        return true;
+        return indexes;
       }
     }
   }
 
-  return false;
+  return null;
 }
