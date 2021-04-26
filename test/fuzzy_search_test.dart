@@ -1,5 +1,6 @@
-import 'package:fuzzy_search/fuzzy_search.dart';
 import 'package:test/test.dart';
+
+import 'package:fuzzy_search/fuzzy_search.dart';
 
 void main() {
   group('Simple Matching Tests', () {

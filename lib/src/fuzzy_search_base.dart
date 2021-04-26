@@ -1,5 +1,6 @@
-import 'package:tuple/tuple.dart';
 import 'dart:math';
+
+import 'package:tuple/tuple.dart';
 
 class Score {
   int value = 0;
