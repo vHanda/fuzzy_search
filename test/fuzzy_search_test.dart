@@ -4,8 +4,8 @@ import 'package:test/test.dart';
 void main() {
   test('Simple Matching Tests', () {
     var inputs = [
-      'source/test/regression/graph.swift',
       'source/string.swift',
+      'source/test/regression/graph.swift',
     ];
 
     for (var i in inputs) {
@@ -17,6 +17,7 @@ void main() {
     var inputs = [
       'graph.swift',
       'source/strinf.swift',
+      'small',
     ];
 
     for (var i in inputs) {
