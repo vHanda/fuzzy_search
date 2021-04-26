@@ -1,4 +1,5 @@
 import 'package:tuple/tuple.dart';
+import 'dart:math';
 
 class Score {
   int value = 0;
@@ -90,8 +91,25 @@ Tuple2<int, _Matrix>? fuzzySearch(String base, String needle) {
       if (needleChar != char) {
         continue;
       }
+
       didMatch = true;
-      m.value[y][x] = 1;
+      var score = 1;
+      if (y > 0) {
+        var maxPrevious = int64MinValue;
+        for (var prevX = 0; prevX <= x - 1; prevX++) {
+          var s = m.value[y - 1][prevX];
+          if (s == null) {
+            continue;
+          }
+
+          var gapPenalty = (x - prevX) - 1;
+          // print('y $y x $x prevX $prevX gapPenalty: $gapPenalty');
+          maxPrevious = max(s - gapPenalty, maxPrevious);
+        }
+        // print('y $y x $x maxPrev $maxPrevious');
+        score += maxPrevious;
+      }
+      m.value[y][x] = score;
     }
 
     if (!didMatch) {
