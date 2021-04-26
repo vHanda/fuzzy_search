@@ -2,15 +2,25 @@ import 'package:fuzzy_search/fuzzy_search.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('A group of tests', () {
-    Awesome awesome;
+  test('Simple Matching Tests', () {
+    var inputs = [
+      'source/test/regression/graph.swift',
+      'source/string.swift',
+    ];
 
-    setUp(() {
-      awesome = Awesome();
-    });
+    for (var i in inputs) {
+      expect(fuzzySearch(i, 'string'), isTrue);
+    }
+  });
 
-    test('First Test', () {
-      expect(awesome.isAwesome, isTrue);
-    });
+  test('Simple Failing Tests', () {
+    var inputs = [
+      'graph.swift',
+      'source/strinf.swift',
+    ];
+
+    for (var i in inputs) {
+      expect(fuzzySearch(i, 'string'), isFalse);
+    }
   });
 }
