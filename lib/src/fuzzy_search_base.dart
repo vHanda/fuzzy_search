@@ -42,6 +42,15 @@ Tuple2<Score, List<int>>? fuzzySearch(String base, String needle) {
 class _Matrix {
   List<List<int?>> value = [[]];
 
+  // FIXME: Store this as a Int16List
+
+  _Matrix({required int rows, required int cols}) {
+    value = List<List<int?>>.generate(
+      rows,
+      (_) => List<int?>.filled(cols, null),
+    );
+  }
+
   void debugPrint(String base) {
     var str = base + '\n';
 
@@ -67,12 +76,7 @@ Tuple2<int, _Matrix>? fuzzySearch(String base, String needle) {
     return null;
   }
 
-  var m = _Matrix();
-  m.value = List<List<int?>>.generate(
-    needle.length,
-    (_) => List<int?>.filled(base.length, null),
-  );
-
+  var m = _Matrix(rows: needle.length, cols: base.length);
   if (needle.isEmpty) {
     return Tuple2<int, _Matrix>(0, m);
   }
