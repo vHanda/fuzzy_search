@@ -77,7 +77,7 @@ Tuple2<int, _Matrix>? fuzzySearch(String base, String needle) {
 
   for (var y = 0; y < needle.length; y++) {
     var needleChar = needle.codeUnitAt(y);
-    //var didMatch = false;
+    var didMatch = false;
     var prevMatchIndex = 0;
     if (y == 0) {
       prevMatchIndex = -1;
@@ -90,7 +90,12 @@ Tuple2<int, _Matrix>? fuzzySearch(String base, String needle) {
       if (needleChar != char) {
         continue;
       }
+      didMatch = true;
       m.value[y][x] = 1;
+    }
+
+    if (!didMatch) {
+      return null;
     }
   }
 
@@ -103,9 +108,6 @@ Tuple2<int, _Matrix>? fuzzySearch(String base, String needle) {
     if (val != null && val > maxScore) {
       maxScore = val;
     }
-  }
-  if (maxScore == int64MinValue) {
-    return null;
   }
 
   return Tuple2<int, _Matrix>(maxScore, m);
