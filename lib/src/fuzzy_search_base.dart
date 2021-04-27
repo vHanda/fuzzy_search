@@ -16,8 +16,6 @@ class _Matrix {
     return _value.getRange(rowNum * cols, (rowNum + 1) * cols).toList();
   }
 
-  int rowLength(int rowNum) => cols;
-
   int? val(int rowNum, int colNum) => _value[(rowNum * cols) + colNum];
   void setVal(int rowNum, int colNum, int val) {
     _value[rowNum * cols + colNum] = val;
@@ -59,8 +57,9 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
   for (var y = 0; y < needle.length; y++) {
     var needleChar = needle.codeUnitAt(y);
     int? firstMatchIndex;
+    var remainderLength = needle.length - y - 1;
 
-    for (var x = prevMatchIndex + 1; x < m.rowLength(y); x++) {
+    for (var x = prevMatchIndex + 1; x < base.length - remainderLength; x++) {
       var char = base.codeUnitAt(x);
       if (needleChar != char) {
         continue;
