@@ -1,25 +1,40 @@
-import 'package:benchmark/benchmark.dart';
 import 'package:fuzzy_search/fuzzy_search.dart';
+import 'package:benchmark_harness/benchmark_harness.dart';
+import 'package:path/path.dart' show dirname, join;
 
 import 'dart:io';
 import 'dart:convert';
 
-var path = './data.txt';
+var templateDataFile = 'data.txt';
 
-void main() {
+class TemplateBenchmark extends BenchmarkBase {
+  TemplateBenchmark() : super('Template');
   var list = <String>[];
 
-  setUp(() async {
-    list = await File(path)
+  static void main() {
+    TemplateBenchmark().report();
+  }
+
+  @override
+  void run() {
+    for (var hay in list) {
+      fuzzySearch(hay, 'string');
+    }
+  }
+
+  @override
+  void setup() async {
+    var scriptDir = dirname(Platform.script.path);
+
+    list = await File(join(scriptDir, templateDataFile))
         .openRead()
         .transform(utf8.decoder)
         .transform(LineSplitter())
         .toList();
-  });
+  }
+}
 
-  benchmark('Simple Search', () {
-    for (var hay in list) {
-      fuzzySearch(hay, 'string');
-    }
-  });
+void main() {
+  // Run TemplateBenchmark
+  TemplateBenchmark.main();
 }
