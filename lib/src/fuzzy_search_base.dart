@@ -1,36 +1,49 @@
 import 'package:tuple/tuple.dart';
 
 class _Matrix {
-  List<List<int?>> _value = [[]];
+  List<int?> _value = [];
+  int rows;
+  int cols;
 
   // FIXME: Store this as a Int16List
 
-  _Matrix({required int rows, required int cols}) {
-    _value = List<List<int?>>.generate(
-      rows,
-      (_) => List<int?>.filled(cols, null),
-    );
+  _Matrix({required this.rows, required this.cols}) {
+    _value = List<int?>.filled(rows * cols, null);
   }
 
+  // FIXME: This conversion to a List can be avoided!
   List<int?> row(int rowNum) {
-    return _value[rowNum];
+    return _value.getRange(rowNum * cols, (rowNum + 1) * cols).toList();
   }
 
-  int rowLength(int rowNum) => _value[rowNum].length;
+  int colNotNull(int rowNum) {
+    var iter = _value.getRange(rowNum * cols, (rowNum + 1) * cols);
 
-  int? val(int rowNum, int colNum) => _value[rowNum][colNum];
+    var i = 0;
+    for (var iterVal in iter) {
+      if (iterVal != null) {
+        return i;
+      }
+      i++;
+    }
+    return -1;
+  }
+
+  int rowLength(int rowNum) => cols;
+
+  int? val(int rowNum, int colNum) => _value[(rowNum * cols) + colNum];
   void setVal(int rowNum, int colNum, int val) {
-    _value[rowNum][colNum] = val;
+    _value[rowNum * cols + colNum] = val;
   }
 
   void debugPrint(String base) {
     var str = base + '\n';
 
-    for (var y = 0; y < _value.length; y++) {
-      for (var x = 0; x < _value[y].length; x++) {
-        var val = _value[y][x];
-        if (val != null) {
-          str += val.toString();
+    for (var y = 0; y < rows; y++) {
+      for (var x = 0; x < cols; x++) {
+        var v = val(y, x);
+        if (v != null) {
+          str += v.toString();
         } else {
           str += '.';
         }
@@ -61,7 +74,7 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
     if (y == 0) {
       prevMatchIndex = -1;
     } else {
-      prevMatchIndex = m.row(y - 1).indexWhere((v) => v != null);
+      prevMatchIndex = m.colNotNull(y - 1);
     }
 
     for (var x = prevMatchIndex + 1; x < m.rowLength(y); x++) {
