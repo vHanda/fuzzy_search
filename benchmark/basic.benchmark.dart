@@ -43,14 +43,13 @@ class TemplateBenchmark {
   // Measures the score for this benchmark by executing it repeatedly until
   // time minimum has been reached.
   static double measureFor(Function f, int minimumMillis) {
-    var minimumMicros = minimumMillis * 1000;
     var iter = 0;
     var watch = Stopwatch();
     watch.start();
     var elapsed = 0;
-    while (elapsed < minimumMicros) {
+    while (elapsed < minimumMillis) {
       f();
-      elapsed = watch.elapsedMicroseconds;
+      elapsed = watch.elapsedMilliseconds;
       iter++;
     }
     return elapsed / iter;
@@ -72,5 +71,5 @@ void main() async {
   await t.setup();
 
   var result = t.measure();
-  print('(RunTime): $result us.');
+  print('(RunTime): $result msecs.');
 }
