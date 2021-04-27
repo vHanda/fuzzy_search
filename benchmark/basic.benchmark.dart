@@ -4,7 +4,7 @@ import 'package:path/path.dart' show dirname, join;
 import 'dart:io';
 import 'dart:convert';
 
-var templateDataFile = 'data.txt';
+var templateDataFile = 'linux.txt';
 
 class TemplateBenchmark {
   var list = <String>[];
