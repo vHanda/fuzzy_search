@@ -48,4 +48,39 @@ void main() {
       });
     }
   });
+
+  group('Scoring', () {
+    test('Start of string bonus', () {
+      var input = [
+        'stringfind',
+        'findstring',
+      ];
+
+      expect(_match(input, 'find'), 'findstring');
+    });
+
+    test('Consequtive characters bonus', () {
+      var input = [
+        'findstring',
+        'findstrfing',
+      ];
+
+      expect(_match(input, 'string'), 'findstring');
+    });
+  });
+}
+
+String _match(List<String> input, String needle) {
+  var scores = <String, int>{};
+  for (var str in input) {
+    var s = fuzzySearch(str, needle);
+    var score = s != null ? s.item1 : int64MinValue;
+    scores[str] = score;
+  }
+
+  input.sort(
+    (a, b) => scores[a]!.compareTo(scores[b]!),
+  );
+
+  return input.last;
 }
