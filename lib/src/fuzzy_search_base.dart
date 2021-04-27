@@ -16,19 +16,6 @@ class _Matrix {
     return _value.getRange(rowNum * cols, (rowNum + 1) * cols).toList();
   }
 
-  int colNotNull(int rowNum) {
-    var iter = _value.getRange(rowNum * cols, (rowNum + 1) * cols);
-
-    var i = 0;
-    for (var iterVal in iter) {
-      if (iterVal != null) {
-        return i;
-      }
-      i++;
-    }
-    return -1;
-  }
-
   int rowLength(int rowNum) => cols;
 
   int? val(int rowNum, int colNum) => _value[(rowNum * cols) + colNum];
@@ -67,15 +54,11 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
   var m = _Matrix(rows: needle.length, cols: base.length);
   var mIndexes = _Matrix(rows: needle.length, cols: base.length);
 
+  var prevMatchIndex = -1;
+
   for (var y = 0; y < needle.length; y++) {
     var needleChar = needle.codeUnitAt(y);
     var didMatch = false;
-    var prevMatchIndex = 0;
-    if (y == 0) {
-      prevMatchIndex = -1;
-    } else {
-      prevMatchIndex = m.colNotNull(y - 1);
-    }
 
     for (var x = prevMatchIndex + 1; x < m.rowLength(y); x++) {
       var char = base.codeUnitAt(x);
@@ -83,7 +66,11 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
         continue;
       }
 
-      didMatch = true;
+      if (!didMatch) {
+        didMatch = true;
+        prevMatchIndex = x;
+      }
+
       var score = 1;
       if (y > 0) {
         var maxPrevious = int64MinValue;
