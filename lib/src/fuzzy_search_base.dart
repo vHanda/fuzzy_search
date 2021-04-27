@@ -130,7 +130,4 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
 }
 
 const int int64MinValue = -9223372036854775808;
-const int int64MaxValue = 9223372036854775807;
-
 const int int16MinValue = -32768;
-const int int16MaxValue = 32767;
