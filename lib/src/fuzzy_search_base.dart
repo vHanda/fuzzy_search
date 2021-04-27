@@ -1,23 +1,34 @@
 import 'package:tuple/tuple.dart';
 
 class _Matrix {
-  List<List<int?>> value = [[]];
+  List<List<int?>> _value = [[]];
 
   // FIXME: Store this as a Int16List
 
   _Matrix({required int rows, required int cols}) {
-    value = List<List<int?>>.generate(
+    _value = List<List<int?>>.generate(
       rows,
       (_) => List<int?>.filled(cols, null),
     );
   }
 
+  List<int?> row(int rowNum) {
+    return _value[rowNum];
+  }
+
+  int rowLength(int rowNum) => _value[rowNum].length;
+
+  int? val(int rowNum, int colNum) => _value[rowNum][colNum];
+  void setVal(int rowNum, int colNum, int val) {
+    _value[rowNum][colNum] = val;
+  }
+
   void debugPrint(String base) {
     var str = base + '\n';
 
-    for (var y = 0; y < value.length; y++) {
-      for (var x = 0; x < value[y].length; x++) {
-        var val = value[y][x];
+    for (var y = 0; y < _value.length; y++) {
+      for (var x = 0; x < _value[y].length; x++) {
+        var val = _value[y][x];
         if (val != null) {
           str += val.toString();
         } else {
@@ -50,10 +61,10 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
     if (y == 0) {
       prevMatchIndex = -1;
     } else {
-      prevMatchIndex = m.value[y - 1].indexWhere((v) => v != null);
+      prevMatchIndex = m.row(y - 1).indexWhere((v) => v != null);
     }
 
-    for (var x = prevMatchIndex + 1; x < m.value[y].length; x++) {
+    for (var x = prevMatchIndex + 1; x < m.rowLength(y); x++) {
       var char = base.codeUnitAt(x);
       if (needleChar != char) {
         continue;
@@ -65,7 +76,7 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
         var maxPrevious = int64MinValue;
         var maxPreviousX = -1;
         for (var prevX = 0; prevX <= x - 1; prevX++) {
-          var s = m.value[y - 1][prevX];
+          var s = m.val(y - 1, prevX);
           if (s == null) {
             continue;
           }
@@ -80,9 +91,9 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
         }
         // print('y $y x $x maxPrev $maxPrevious');
         score += maxPrevious;
-        mIndexes.value[y - 1][x] = maxPreviousX;
+        mIndexes.setVal(y - 1, x, maxPreviousX);
       }
-      m.value[y][x] = score;
+      m.setVal(y, x, score);
     }
 
     if (!didMatch) {
@@ -93,7 +104,7 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
   // m.debugPrint(base);
   // mIndexes.debugPrint(base);
 
-  var lastRow = m.value[needle.length - 1];
+  var lastRow = m.row(needle.length - 1);
   var maxScore = int64MinValue;
   var maxScoreIndex = -1;
   for (var i = lastRow.length - 1; i >= needle.length - 1; i--) {
@@ -108,7 +119,7 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
 
   var indexes = <int>[maxScoreIndex];
   for (var y = needle.length - 2; y >= 0; y--) {
-    var i = mIndexes.value[y][maxScoreIndex];
+    var i = mIndexes.val(y, maxScoreIndex);
     assert(i != null);
 
     maxScoreIndex = i!;
