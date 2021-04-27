@@ -58,7 +58,7 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
 
   for (var y = 0; y < needle.length; y++) {
     var needleChar = needle.codeUnitAt(y);
-    var didMatch = false;
+    int? firstMatchIndex;
 
     for (var x = prevMatchIndex + 1; x < m.rowLength(y); x++) {
       var char = base.codeUnitAt(x);
@@ -66,16 +66,14 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
         continue;
       }
 
-      if (!didMatch) {
-        didMatch = true;
-        prevMatchIndex = x;
-      }
+      firstMatchIndex ??= x;
 
       var score = 1;
       if (y > 0) {
+        // Find the max value of the prev row
         var maxPrevious = int64MinValue;
         var maxPreviousX = -1;
-        for (var prevX = 0; prevX <= x - 1; prevX++) {
+        for (var prevX = prevMatchIndex; prevX <= x - 1; prevX++) {
           var s = m.val(y - 1, prevX);
           if (s == null) {
             continue;
@@ -96,8 +94,10 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
       m.setVal(y, x, score);
     }
 
-    if (!didMatch) {
+    if (firstMatchIndex == null) {
       return null;
+    } else {
+      prevMatchIndex = firstMatchIndex;
     }
   }
 
