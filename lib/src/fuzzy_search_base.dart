@@ -96,7 +96,7 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
   var lastRow = m.value[needle.length - 1];
   var maxScore = int64MinValue;
   var maxScoreIndex = -1;
-  for (var i = lastRow.length - 1; i >= needle.length; i--) {
+  for (var i = lastRow.length - 1; i >= needle.length - 1; i--) {
     final val = lastRow[i];
     if (val != null && val > maxScore) {
       maxScore = val;
@@ -104,8 +104,10 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
     }
   }
 
+  assert(maxScoreIndex != -1);
+
   var indexes = <int>[maxScoreIndex];
-  for (var y = needle.length - 2; y > 0; y--) {
+  for (var y = needle.length - 2; y >= 0; y--) {
     var i = mIndexes.value[y][maxScoreIndex];
     assert(i != null);
 
