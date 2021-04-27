@@ -1,43 +1,4 @@
-import 'dart:math';
-
 import 'package:tuple/tuple.dart';
-
-class Score {
-  int value = 0;
-  var log = <Tuple2<int, String>>[];
-
-  void add(int amount, {required String reason}) {
-    value += amount;
-    log.add(Tuple2<int, String>(amount, reason));
-  }
-}
-
-/*
-Tuple2<Score, List<int>>? fuzzySearch(String base, String needle) {
-  if (needle.isEmpty) {
-    return Tuple2<Score, List<int>>(Score(), []);
-  }
-
-  var score = Score();
-  var indexes = <int>[];
-  var remainder = String.fromCharCodes(needle.codeUnits);
-  for (var i = 0; i < base.codeUnits.length; i++) {
-    var char = base.codeUnits[i];
-    if (char == remainder.codeUnits.first) {
-      remainder = String.fromCharCodes(remainder.codeUnits, 1);
-      indexes.add(i);
-      score.add(1, reason: 'Match ${String.fromCharCode(char)}');
-      if (remainder.isEmpty) {
-        return Tuple2<Score, List<int>>(score, indexes);
-      }
-    } else {
-      score.add(-1, reason: 'Skip ${String.fromCharCode(char)}');
-    }
-  }
-
-  return null;
-}
-*/
 
 class _Matrix {
   List<List<int?>> value = [[]];
@@ -70,16 +31,17 @@ class _Matrix {
   }
 }
 
-Tuple2<int, _Matrix>? fuzzySearch(String base, String needle) {
+Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
   // print('_fuzzySearchMatrix $base $needle');
   if (base.length < needle.length) {
     return null;
   }
+  if (needle.isEmpty) {
+    return Tuple2<int, List<int>>(0, []);
+  }
 
   var m = _Matrix(rows: needle.length, cols: base.length);
-  if (needle.isEmpty) {
-    return Tuple2<int, _Matrix>(0, m);
-  }
+  var mIndexes = _Matrix(rows: needle.length, cols: base.length);
 
   for (var y = 0; y < needle.length; y++) {
     var needleChar = needle.codeUnitAt(y);
@@ -101,6 +63,7 @@ Tuple2<int, _Matrix>? fuzzySearch(String base, String needle) {
       var score = 1;
       if (y > 0) {
         var maxPrevious = int64MinValue;
+        var maxPreviousX = -1;
         for (var prevX = 0; prevX <= x - 1; prevX++) {
           var s = m.value[y - 1][prevX];
           if (s == null) {
@@ -108,11 +71,16 @@ Tuple2<int, _Matrix>? fuzzySearch(String base, String needle) {
           }
 
           var gapPenalty = (x - prevX) - 1;
+          var finalScore = s - gapPenalty;
+          if (finalScore >= maxPrevious) {
+            maxPrevious = finalScore;
+            maxPreviousX = prevX;
+          }
           // print('y $y x $x prevX $prevX gapPenalty: $gapPenalty');
-          maxPrevious = max(s - gapPenalty, maxPrevious);
         }
         // print('y $y x $x maxPrev $maxPrevious');
         score += maxPrevious;
+        mIndexes.value[y - 1][x] = maxPreviousX;
       }
       m.value[y][x] = score;
     }
@@ -123,18 +91,34 @@ Tuple2<int, _Matrix>? fuzzySearch(String base, String needle) {
   }
 
   // m.debugPrint(base);
+  // mIndexes.debugPrint(base);
 
   var lastRow = m.value[needle.length - 1];
   var maxScore = int64MinValue;
+  var maxScoreIndex = -1;
   for (var i = lastRow.length - 1; i >= needle.length; i--) {
     final val = lastRow[i];
     if (val != null && val > maxScore) {
       maxScore = val;
+      maxScoreIndex = i;
     }
   }
 
-  return Tuple2<int, _Matrix>(maxScore, m);
+  var indexes = <int>[maxScoreIndex];
+  for (var y = needle.length - 2; y > 0; y--) {
+    var i = mIndexes.value[y][maxScoreIndex];
+    assert(i != null);
+
+    maxScoreIndex = i!;
+    indexes.insert(0, maxScoreIndex);
+  }
+  // print(indexes);
+
+  return Tuple2<int, List<int>>(maxScore, indexes);
 }
 
 const int int64MinValue = -9223372036854775808;
 const int int64MaxValue = 9223372036854775807;
+
+const int int16MinValue = -32768;
+const int int16MaxValue = 32767;
