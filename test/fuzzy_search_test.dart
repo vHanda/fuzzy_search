@@ -28,7 +28,7 @@ void main() {
       test('$hay - $needle', () {
         var result = fuzzySearch(hay, needle);
         expect(result, isNotNull);
-        expect(result!.item2, testData[2] as List<int>);
+        expect(result!.indexes, testData[2] as List<int>);
       });
     }
   });
@@ -74,7 +74,7 @@ String _match(List<String> input, String needle) {
   var scores = <String, int>{};
   for (var str in input) {
     var s = fuzzySearch(str, needle);
-    var score = s != null ? s.item1 : int64MinValue;
+    var score = s != null ? s.score : int64MinValue;
     scores[str] = score;
   }
 

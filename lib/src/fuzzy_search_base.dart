@@ -1,5 +1,3 @@
-import 'package:tuple/tuple.dart';
-
 class _Matrix {
   List<int?> _value = [];
   int rows;
@@ -40,13 +38,20 @@ class _Matrix {
   }
 }
 
-Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
+class FuzzySearchResult {
+  int score;
+  List<int> indexes;
+
+  FuzzySearchResult(this.score, this.indexes);
+}
+
+FuzzySearchResult? fuzzySearch(String base, String needle) {
   // print('_fuzzySearchMatrix $base $needle');
   if (base.length < needle.length) {
     return null;
   }
   if (needle.isEmpty) {
-    return Tuple2<int, List<int>>(0, []);
+    return FuzzySearchResult(0, []);
   }
 
   var m = _Matrix(rows: needle.length, cols: base.length);
@@ -126,7 +131,7 @@ Tuple2<int, List<int>>? fuzzySearch(String base, String needle) {
   }
   // print(indexes);
 
-  return Tuple2<int, List<int>>(maxScore, indexes);
+  return FuzzySearchResult(maxScore, indexes);
 }
 
 const int int64MinValue = -9223372036854775808;
