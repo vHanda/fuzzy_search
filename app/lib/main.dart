@@ -39,12 +39,19 @@ class _FuzzySearchAppState extends State<FuzzySearchApp> {
   void _search(String needle) {
     filteredList.clear();
 
+    var watch = Stopwatch();
+    watch.start();
+
     for (var hay in dataList) {
       var present = fuzzySearch(hay, needle);
       if (present != null) {
         filteredList.add(hay);
       }
     }
+
+    print(
+        'N(${dataList.length}) -> ${filteredList.length} = ${watch.elapsed.inMilliseconds} msecs');
+
     setState(() {});
   }
 
