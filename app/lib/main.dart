@@ -72,14 +72,19 @@ class _FuzzySearchAppState extends State<FuzzySearchApp> {
           controller: textController,
           autofocus: true,
         ),
-        Expanded(child: Scrollbar(child: list)),
+        Expanded(
+          child: Scrollbar(
+            child: list,
+            isAlwaysShown: true,
+          ),
+        ),
       ],
     );
   }
 
   Future<void> _loadAssets() async {
     var data = await DefaultAssetBundle.of(context).loadString(
-      '../benchmark/data.txt',
+      '../benchmark/linux.txt',
       cache: false,
     );
     var list = LineSplitter.split(data).toList();
