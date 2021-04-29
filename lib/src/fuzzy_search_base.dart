@@ -82,13 +82,15 @@ FuzzySearchResult? fuzzySearch(String base, String needle) {
 
   assert(maxScoreIndex != -1);
 
-  var indexes = <int>[maxScoreIndex];
+  var indexes = List<int>.filled(needle.length, -1);
+  indexes[needle.length - 1] = maxScoreIndex;
+
   for (var y = needle.length - 2; y >= 0; y--) {
     var i = mIndexes.val(y, maxScoreIndex);
     assert(i != null);
 
     maxScoreIndex = i!;
-    indexes.insert(0, maxScoreIndex);
+    indexes[y] = maxScoreIndex;
   }
   // print(indexes);
 
