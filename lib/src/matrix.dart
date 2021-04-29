@@ -9,11 +9,6 @@ class Matrix {
     _value = List<int?>.filled(rows * cols, null);
   }
 
-  // FIXME: This conversion to a List can be avoided!
-  List<int?> row(int rowNum) {
-    return _value.getRange(rowNum * cols, (rowNum + 1) * cols).toList();
-  }
-
   int? val(int rowNum, int colNum) => _value[(rowNum * cols) + colNum];
   void setVal(int rowNum, int colNum, int val) {
     _value[rowNum * cols + colNum] = val;

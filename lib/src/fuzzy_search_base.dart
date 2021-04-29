@@ -70,11 +70,10 @@ FuzzySearchResult? fuzzySearch(String base, String needle) {
   // m.debugPrint(base);
   // mIndexes.debugPrint(base);
 
-  var lastRow = m.row(needle.length - 1);
   var maxScore = int64MinValue;
   var maxScoreIndex = -1;
-  for (var i = lastRow.length - 1; i >= needle.length - 1; i--) {
-    final val = lastRow[i];
+  for (var i = base.length - 1; i >= needle.length - 1; i--) {
+    final val = m.val(needle.length - 1, i);
     if (val != null && val > maxScore) {
       maxScore = val;
       maxScoreIndex = i;
