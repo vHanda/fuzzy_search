@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fuzzy_search/fuzzy_search.dart';
 
+// import 'data/linux_repo_paths.dart' as linux_repo_paths;
+import 'data/small_data_set.dart' as small_data_set;
+
 void main() {
   runApp(MyApp());
 }
@@ -29,7 +32,8 @@ class _FuzzySearchAppState extends State<FuzzySearchApp> {
   @override
   void initState() {
     super.initState();
-    _loadAssets();
+
+    dataList = small_data_set.data;
 
     textController.addListener(() {
       _search(textController.value.text);
@@ -87,18 +91,6 @@ class _FuzzySearchAppState extends State<FuzzySearchApp> {
         ),
       ],
     );
-  }
-
-  Future<void> _loadAssets() async {
-    var data = await DefaultAssetBundle.of(context).loadString(
-      '../benchmark/linux.txt',
-      cache: false,
-    );
-    var list = LineSplitter.split(data).toList();
-
-    setState(() {
-      dataList = list;
-    });
   }
 }
 
