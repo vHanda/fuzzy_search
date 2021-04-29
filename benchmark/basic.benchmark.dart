@@ -1,10 +1,9 @@
-import 'package:fuzzy_search/fuzzy_search.dart';
-import 'package:path/path.dart' show dirname, join;
-
 import 'dart:io';
-import 'dart:convert';
 
-var templateDataFile = 'linux.txt';
+import 'package:fuzzy_search/fuzzy_search.dart';
+
+import './linux_repo_paths.dart' as linux_repo_paths;
+import './small_data_set.dart' as small_data_set;
 
 class TemplateBenchmark {
   var list = <String>[];
@@ -25,16 +24,6 @@ class TemplateBenchmark {
     for (var hay in list) {
       fuzzySearch(hay, 'string');
     }
-  }
-
-  Future<void> setup() async {
-    var scriptDir = dirname(Platform.script.path);
-
-    list = await File(join(scriptDir, templateDataFile))
-        .openRead()
-        .transform(utf8.decoder)
-        .transform(LineSplitter())
-        .toList();
   }
 
   // Not measures teardown code executed after the benchmark runs.
@@ -66,9 +55,24 @@ class TemplateBenchmark {
   }
 }
 
-void main() async {
+void main(List<String> args) async {
+  if (args.isEmpty) {
+    print('Must select dataset: "linux" or "small"');
+    exit(1);
+  }
+  var list = <String>[];
+  var dataSet = args[0].toLowerCase();
+  if (dataSet == 'linux') {
+    list = linux_repo_paths.data;
+  } else if (dataSet == 'small') {
+    list = small_data_set.data;
+  } else {
+    print('Must be either "linux" or "small"');
+    exit(1);
+  }
+
   var t = TemplateBenchmark();
-  await t.setup();
+  t.list = list;
 
   var result = t.measure();
   print('(RunTime): $result msecs.');
