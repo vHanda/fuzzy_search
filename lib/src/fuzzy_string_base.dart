@@ -1,5 +1,7 @@
 import 'string_match.dart';
 
+import 'package:diacritic/diacritic.dart';
+
 typedef MapToStringFunction = String Function<T>(T t);
 
 class FuzzySearch<T> {
@@ -8,10 +10,29 @@ class FuzzySearch<T> {
 
   FuzzySearch(this.list, {required this.mappingFn});
 
-  List<FuzzySearchResult<T>> match(String needle) {
+  List<FuzzySearchResult<T>> match(
+    String needle, {
+    bool ignoreCase = true,
+    bool ignoreDiacritics = true,
+  }) {
+    var needleCleaned = needle;
+    if (ignoreDiacritics) {
+      needleCleaned = removeDiacritics(needleCleaned);
+    }
+    if (ignoreCase) {
+      needleCleaned = needleCleaned.toLowerCase();
+    }
+
     var results = <FuzzySearchResult<T>>[];
     for (var obj in list) {
       var hay = mappingFn(obj);
+      if (ignoreDiacritics) {
+        hay = removeDiacritics(hay);
+      }
+      if (ignoreCase) {
+        hay = hay.toLowerCase();
+      }
+
       var r = fuzzySearch(hay, needle);
       if (r == null) {
         continue;
@@ -37,4 +58,8 @@ class FuzzySearchResult<T> {
     required this.score,
     required this.indexes,
   });
+}
+
+extension FuzzyMatch on String {
+  Result? fuzzyMatch(String needle) => fuzzySearch(this, needle);
 }

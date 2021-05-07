@@ -12,7 +12,7 @@ class ComplexObj {
 
 void main() {
   var objects = [
-    ComplexObj(10, 'bug optimistic chat not cleared out'),
+    ComplexObj(10, 'Bug optimistic chat not cleared out'),
     ComplexObj(20, 'Test optimistic bug'),
     ComplexObj(30, 'While bi-rotational editing'),
   ];
