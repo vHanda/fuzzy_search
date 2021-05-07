@@ -4,8 +4,7 @@
 
 
 Fuzzy search is typically used to search a large list of file names by typing
-a few relevant characters. Example - Quick Open in VSCode or Sublime. The algorithm implemented
-is very similar to
+a few relevant characters. Such as Quick Open in VSCode or Sublime.
 
 Unlike classical [fuzzy string matching](https://en.wikipedia.org/wiki/Approximate_string_matching) which
 matches strings which approximately match (implemented by Fuse.js). The matching here requires the
