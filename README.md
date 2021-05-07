@@ -26,3 +26,27 @@ Source/Test/RegressIoN/Graph.dart
 ```
 
 This library implements the algorithm explained in [these wonderful posts](https://www.objc.io/blog/2020/08/18/fuzzy-search/).
+
+## Example
+
+```dart
+  var list = [
+    'source/string.dart',
+    'source/test/regression/graph.dart',
+    'sour/strinf.dart',
+  ];
+  for (var l in list) {
+    var r = l.fuzzyMatch('string');
+    if (r == null) {
+      continue;
+    }
+
+    var cp = l;
+    for (var index in r.indexes) {
+      var char = String.fromCharCode(cp.codeUnitAt(index));
+      cp = cp.replaceRange(index, index + 1, char.toUpperCase());
+    }
+
+    print('${r.score} $l -> $cp');
+  }
+```
