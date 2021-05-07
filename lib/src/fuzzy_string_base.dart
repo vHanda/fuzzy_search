@@ -4,7 +4,7 @@ typedef MapToStringFunction = String Function<T>(T t);
 
 class FuzzySearch<T> {
   final List<T> list;
-  final MapToStringFunction mappingFn;
+  final String Function(T t) mappingFn;
 
   FuzzySearch(this.list, {required this.mappingFn});
 
