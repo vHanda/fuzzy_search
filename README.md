@@ -1,25 +1,22 @@
-A library for Dart developers.
+Fuzzy search is typically used to search a large list of file names by typing
+a few relevant characters. Example - Quick Open in VSCode or Sublime. The algorithm implemented
+is very similar to
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+Unlike classical [fuzzy string matching](https://en.wikipedia.org/wiki/Approximate_string_matching) which
+matches strings which approximately match (implemented by Fuse.js). The matching here requires the
+matching characters to exist one after another at some point in the string.
 
-## Usage
+Example -
 
-A simple usage example:
-
-```dart
-import 'package:fuzzy_search/fuzzy_search.dart';
-
-main() {
-  var awesome = new Awesome();
-}
+```
+source/string.dart
+source/test/regression/graph.dart
+sour/strinf.dart
 ```
 
-## Features and bugs
+When searching for `string`, only the first two strings match. The matching characters are indicated in uppercase -
 
-Please file feature requests and bugs at the [issue tracker][tracker].
-
-[tracker]: http://example.com/issues/replaceme
-
-License -
-* We should specify that the code comes from - https://github.com/objcio/S01E214-quick-open-from-recursion-to-loops/blob/master/LICENSE.md
+```
+source/STRING.dart
+Source/Test/RegressIoN/Graph.dart
+```
