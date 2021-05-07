@@ -24,3 +24,5 @@ When searching for `string`, only the first two strings match. The matching char
 source/STRING.dart
 Source/Test/RegressIoN/Graph.dart
 ```
+
+This library implements the algorithm explained in [these wonderful posts](https://www.objc.io/blog/2020/08/18/fuzzy-search/).
