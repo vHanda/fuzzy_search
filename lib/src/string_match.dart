@@ -1,19 +1,20 @@
 import 'matrix.dart';
 
-class FuzzySearchResult {
+// the higher the score the better
+class Result {
   int score;
   List<int> indexes;
 
-  FuzzySearchResult(this.score, this.indexes);
+  Result(this.score, this.indexes);
 }
 
-FuzzySearchResult? fuzzySearch(String base, String needle) {
+Result? fuzzySearch(String base, String needle) {
   // print('_fuzzySearchMatrix $base $needle');
   if (base.length < needle.length) {
     return null;
   }
   if (needle.isEmpty) {
-    return FuzzySearchResult(0, []);
+    return Result(0, []);
   }
 
   var m = Matrix(rows: needle.length, cols: base.length);
@@ -94,8 +95,12 @@ FuzzySearchResult? fuzzySearch(String base, String needle) {
   }
   // print(indexes);
 
-  return FuzzySearchResult(maxScore, indexes);
+  return Result(maxScore, indexes);
 }
 
 const int int64MinValue = -9223372036854775808;
 const int int16MinValue = -32768;
+
+// TODO: Array function
+//       Case handling
+// Let the function it takes be a template!

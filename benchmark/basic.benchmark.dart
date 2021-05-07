@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fuzzy_search/fuzzy_search.dart';
+import 'package:fuzzy_search/src/string_match.dart';
 
 import './linux_repo_paths.dart' as linux_repo_paths;
 import './small_data_set.dart' as small_data_set;
