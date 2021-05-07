@@ -1,3 +1,8 @@
+# Fuzzy Search
+
+[![CI](https://img.shields.io/github/workflow/status/vhanda/fuzzy_search/Dart%20CI)](https://github.com/vHanda/fuzzy_search/actions?query=Dart%20CI)
+
+
 Fuzzy search is typically used to search a large list of file names by typing
 a few relevant characters. Example - Quick Open in VSCode or Sublime. The algorithm implemented
 is very similar to
