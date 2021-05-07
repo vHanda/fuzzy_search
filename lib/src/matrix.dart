@@ -3,8 +3,6 @@ class Matrix {
   int rows;
   int cols;
 
-  // FIXME: Store this as a Int16List
-
   Matrix({required this.rows, required this.cols}) {
     _value = List<int?>.filled(rows * cols, null);
   }
