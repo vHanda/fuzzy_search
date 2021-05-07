@@ -50,3 +50,6 @@ This library implements the algorithm explained in [these wonderful posts](https
     print('${r.score} $l -> $cp');
   }
 ```
+
+
+For automatic diacritics and case-removal look at the API in example.
