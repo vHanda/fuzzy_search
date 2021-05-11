@@ -12,10 +12,13 @@ class Matrix {
     _value[rowNum * cols + colNum] = val;
   }
 
-  void debugPrint(String base) {
-    var str = base + '\n';
+  void debugPrint(String base, String needle) {
+    var str = '  ' + base + '\n';
 
     for (var y = 0; y < rows; y++) {
+      str += String.fromCharCode(needle.codeUnitAt(y));
+      str += ' ';
+
       for (var x = 0; x < cols; x++) {
         var v = val(y, x);
         if (v != null) {

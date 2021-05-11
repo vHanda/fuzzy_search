@@ -87,8 +87,8 @@ Result? fuzzySearch(String base, String needle) {
     }
   }
 
-  // m.debugPrint(base);
-  // mIndexes.debugPrint(base);
+  // m.debugPrint(base, needle);
+  // mIndexes.debugPrint(base, needle);
 
   var maxScore = int64MinValue;
   var maxScoreIndex = -1;
