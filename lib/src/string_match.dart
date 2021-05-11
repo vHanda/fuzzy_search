@@ -1,4 +1,5 @@
 import 'matrix.dart';
+import 'scoring.dart';
 
 // the higher the score the better
 class Result {
@@ -118,31 +119,3 @@ Result? fuzzySearch(String base, String needle) {
 }
 
 const int int64MinValue = -9223372036854775808;
-
-/// Return the score for this position
-/// Do not add it to the prevMatchScore
-int scoringFunc({
-  required String hay,
-  required String needle,
-  required String matchingChar,
-  required int posInNeedle,
-  required int posInHay,
-  required int prevMatchInHayIndex,
-  required String prevMatchInHayChar,
-  required int prevMatchScore,
-}) {
-  // 1 point for maching a char
-  var score = 1;
-
-  // First letter match
-  if (prevMatchInHayIndex == -1) {
-    // score += hay.length - posInHay;
-    return score;
-  }
-
-  var gapPenalty = (posInHay - prevMatchInHayIndex) - 1;
-  score -= gapPenalty;
-  return score;
-}
-
-// I think we need examples for this
