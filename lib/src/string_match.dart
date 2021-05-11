@@ -35,7 +35,7 @@ Result? fuzzySearch(String base, String needle) {
 
       firstMatchIndex ??= x;
 
-      var score = 1;
+      var score = 0;
       if (y > 0) {
         // Find the max value of the prev row
         var maxPrevious = int64MinValue;
@@ -46,17 +46,36 @@ Result? fuzzySearch(String base, String needle) {
             continue;
           }
 
-          var gapPenalty = (x - prevX) - 1;
-          var finalScore = s - gapPenalty;
+          var charScore = scoringFunc(
+            hay: base,
+            needle: needle,
+            matchingChar: String.fromCharCode(char),
+            posInNeedle: y,
+            posInHay: x,
+            prevMatchInHayIndex: prevX,
+            prevMatchInHayChar: String.fromCharCode(base.codeUnitAt(prevX)),
+            prevMatchScore: s,
+          );
+          var finalScore = s + charScore;
           if (finalScore >= maxPrevious) {
             maxPrevious = finalScore;
             maxPreviousX = prevX;
           }
-          // print('y $y x $x prevX $prevX gapPenalty: $gapPenalty');
         }
-        // print('y $y x $x maxPrev $maxPrevious');
         score += maxPrevious;
         mIndexes.setVal(y - 1, x, maxPreviousX);
+      } else {
+        var firstCharScore = scoringFunc(
+          hay: base,
+          needle: needle,
+          matchingChar: String.fromCharCode(char),
+          posInNeedle: y,
+          posInHay: x,
+          prevMatchInHayIndex: -1,
+          prevMatchInHayChar: '',
+          prevMatchScore: 0,
+        );
+        score += firstCharScore;
       }
       m.setVal(y, x, score);
     }
@@ -99,8 +118,31 @@ Result? fuzzySearch(String base, String needle) {
 }
 
 const int int64MinValue = -9223372036854775808;
-const int int16MinValue = -32768;
 
-// TODO: Array function
-//       Case handling
-// Let the function it takes be a template!
+/// Return the score for this position
+/// Do not add it to the prevMatchScore
+int scoringFunc({
+  required String hay,
+  required String needle,
+  required String matchingChar,
+  required int posInNeedle,
+  required int posInHay,
+  required int prevMatchInHayIndex,
+  required String prevMatchInHayChar,
+  required int prevMatchScore,
+}) {
+  // 1 point for maching a char
+  var score = 1;
+
+  // First letter match
+  if (prevMatchInHayIndex == -1) {
+    // score += hay.length - posInHay;
+    return score;
+  }
+
+  var gapPenalty = (posInHay - prevMatchInHayIndex) - 1;
+  score -= gapPenalty;
+  return score;
+}
+
+// I think we need examples for this
