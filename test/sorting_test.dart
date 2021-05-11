@@ -25,8 +25,8 @@ class MatchTest {
 }
 
 var data = [
-  // MatchTest(['colony', 'old man'], 'ol', 'old man'),
-  // MatchTest(['cman', 'right man'], 'man', 'right man'),
+  MatchTest(['colony', 'old man'], 'ol', 'old man'),
+  MatchTest(['cman', 'right man'], 'man', 'right man'),
   MatchTest([
     'Production Release',
     'don\'t change size of Avatar in Menu',

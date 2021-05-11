@@ -54,7 +54,7 @@ Result? fuzzySearch(String base, String needle) {
             posInNeedle: y,
             posInHay: x,
             prevMatchInHayIndex: prevX,
-            prevMatchInHayChar: String.fromCharCode(base.codeUnitAt(prevX)),
+            prevMatchingChar: String.fromCharCode(base.codeUnitAt(prevX)),
             prevMatchScore: s,
           );
           var finalScore = s + charScore;
@@ -73,7 +73,7 @@ Result? fuzzySearch(String base, String needle) {
           posInNeedle: y,
           posInHay: x,
           prevMatchInHayIndex: -1,
-          prevMatchInHayChar: '',
+          prevMatchingChar: '',
           prevMatchScore: 0,
         );
         score += firstCharScore;
