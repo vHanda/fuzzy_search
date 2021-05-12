@@ -38,6 +38,12 @@ var data = [
     'source/string.swift',
     'str/testing.swift',
   ], 'string', 'source/string.swift'),
+  MatchTest([
+    'emwtf ais going onl',
+    'spacebar doesn\'t seem to work in the chat till i start typing again',
+    'invite group chat member by e-mail',
+    'universalize date format for international users',
+  ], 'email', 'invite group chat member by e-mail'),
 ];
 
 void main() {
