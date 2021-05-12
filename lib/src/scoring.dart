@@ -44,6 +44,23 @@ int scoringFunc({
   }
 
   // Each consequtive match should give us a lot
+  /*
+  if (conseqMatch) {
+    var numConseqMatches = 1;
+    var prev = prevMatchInHayIndex;
+    for (var prevMatchIndex in prevIndexes) {
+      if (prev - prevMatchIndex == 1) {
+        numConseqMatches++;
+        prev = prevMatchIndex;
+      } else {
+        break;
+      }
+    }
+
+    score += numConseqMatches;
+  }
+  */
+
   if (conseqMatch) {
     score += 1;
   }
