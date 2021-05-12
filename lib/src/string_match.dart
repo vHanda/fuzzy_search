@@ -47,15 +47,17 @@ Result? fuzzySearch(String base, String needle) {
             continue;
           }
 
-          var maxX = prevX;
-          var prevIndexes = <int>[prevX];
-          for (var y2 = y - 2; y2 >= 0; y2--) {
-            // print('y2 $y2 maxX $maxX');
-            var i = mIndexes.val(y2, maxX);
-            assert(i != null);
+          Iterable<int> genPrevIndexes() sync* {
+            yield prevX;
+            var maxX = prevX;
+            for (var y2 = y - 2; y2 >= 0; y2--) {
+              // print('y2 $y2 maxX $maxX');
+              var i = mIndexes.val(y2, maxX);
+              assert(i != null);
 
-            maxX = i!;
-            prevIndexes.add(maxX);
+              maxX = i!;
+              yield maxX;
+            }
           }
 
           var charScore = scoringFunc(
@@ -67,7 +69,7 @@ Result? fuzzySearch(String base, String needle) {
             prevMatchInHayIndex: prevX,
             prevMatchingChar: String.fromCharCode(base.codeUnitAt(prevX)),
             prevMatchScore: s,
-            prevIndexes: prevIndexes,
+            prevIndexes: genPrevIndexes(),
           );
           var finalScore = s + charScore;
           if (finalScore >= maxPrevious) {
