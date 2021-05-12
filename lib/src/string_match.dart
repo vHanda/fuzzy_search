@@ -38,13 +38,24 @@ Result? fuzzySearch(String base, String needle) {
 
       var score = 0;
       if (y > 0) {
-        // Find the max value of the prev row
+        // Find which score from prev Row + this cell's score is the max
         var maxPrevious = int64MinValue;
         var maxPreviousX = -1;
         for (var prevX = prevMatchIndex; prevX <= x - 1; prevX++) {
           var s = m.val(y - 1, prevX);
           if (s == null) {
             continue;
+          }
+
+          var maxX = prevX;
+          var prevIndexes = <int>[prevX];
+          for (var y2 = y - 2; y2 >= 0; y2--) {
+            // print('y2 $y2 maxX $maxX');
+            var i = mIndexes.val(y2, maxX);
+            assert(i != null);
+
+            maxX = i!;
+            prevIndexes.add(maxX);
           }
 
           var charScore = scoringFunc(
@@ -56,6 +67,7 @@ Result? fuzzySearch(String base, String needle) {
             prevMatchInHayIndex: prevX,
             prevMatchingChar: String.fromCharCode(base.codeUnitAt(prevX)),
             prevMatchScore: s,
+            prevIndexes: prevIndexes,
           );
           var finalScore = s + charScore;
           if (finalScore >= maxPrevious) {
@@ -75,6 +87,7 @@ Result? fuzzySearch(String base, String needle) {
           prevMatchInHayIndex: -1,
           prevMatchingChar: '',
           prevMatchScore: 0,
+          prevIndexes: <int>[],
         );
         score += firstCharScore;
       }

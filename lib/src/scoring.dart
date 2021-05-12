@@ -10,6 +10,7 @@ int scoringFunc({
   required int prevMatchInHayIndex,
   required String prevMatchingChar,
   required int prevMatchScore,
+  required List<int> prevIndexes,
 }) {
   final numUnmatchedChars = (posInHay - prevMatchInHayIndex) - 1;
   final conseqMatch = numUnmatchedChars == 0;
