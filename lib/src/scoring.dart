@@ -30,15 +30,12 @@ int scoringFunc({
   // start of a word is identified by -
   //   0 index
   //   last char is a space
-  var isStartOfWord = false;
-  var prevCharInHay = '';
-  if (posInHay > 0) {
-    prevCharInHay = String.fromCharCode(hay.codeUnitAt(posInHay - 1));
-  } else {
-    isStartOfWord = true;
-  }
-  if (prevCharInHay == ' ') {
-    isStartOfWord = true;
+  var isStartOfWord = posInHay == 0;
+  if (!isStartOfWord) {
+    var prevChar = String.fromCharCode(hay.codeUnitAt(posInHay - 1));
+    if (prevChar == ' ') {
+      isStartOfWord = true;
+    }
   }
 
   if (isStartOfWord) {
