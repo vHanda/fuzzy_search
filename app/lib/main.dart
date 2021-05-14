@@ -69,10 +69,10 @@ class _FuzzySearchAppState extends State<FuzzySearchApp> {
           return Container();
         }
         if (data[i] is String) {
-          return buildTile(0, data[i] as String);
+          return buildTile(0, data[i] as String, []);
         }
         var result = data[i] as FuzzySearchResult<String>;
-        return buildTile(result.score, result.obj);
+        return buildTile(result.score, result.obj, result.indexes);
       },
     );
 
@@ -98,9 +98,27 @@ class _FuzzySearchAppState extends State<FuzzySearchApp> {
   }
 }
 
-Widget buildTile(int score, String t) {
+Widget buildTile(int score, String t, List<int> indexes) {
+  var spans = <TextSpan>[];
+  for (var i = 0; i < t.length; i++) {
+    var char = String.fromCharCode(t.codeUnitAt(i));
+    print('> $char');
+    var span = TextSpan(
+      text: char,
+      style: indexes.contains(i)
+          ? TextStyle(fontWeight: FontWeight.bold)
+          : TextStyle(),
+    );
+    spans.add(span);
+  }
+
   return ListTile(
     leading: Text(score.toString()),
-    title: Text(t),
+    title: RichText(
+      text: TextSpan(
+        style: TextStyle(color: Colors.black),
+        children: spans,
+      ),
+    ),
   );
 }
