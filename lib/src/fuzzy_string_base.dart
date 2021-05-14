@@ -43,6 +43,7 @@ class FuzzySearch<T> {
         indexes: r.indexes,
       ));
     }
+    results.sort((a, b) => b.score.compareTo(a.score));
 
     return results;
   }
