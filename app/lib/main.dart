@@ -27,7 +27,7 @@ class FuzzySearchApp extends StatefulWidget {
 class _FuzzySearchAppState extends State<FuzzySearchApp> {
   var textController = TextEditingController();
   var dataList = <String>[];
-  var filteredList = <String>[];
+  var filteredList = <FuzzySearchResult>[];
 
   @override
   void initState() {
@@ -41,20 +41,20 @@ class _FuzzySearchAppState extends State<FuzzySearchApp> {
   }
 
   void _search(String needle) {
-    filteredList.clear();
-
+    print('###############################');
+    print('###############################');
+    print('###############################');
+    print('###############################');
+    print('###############################');
     var watch = Stopwatch();
     watch.start();
 
-    for (var hay in dataList) {
-      var present = fuzzySearch(hay, needle);
-      if (present != null) {
-        filteredList.add(hay);
-      }
-    }
+    filteredList.clear();
+    var fs = FuzzySearch(dataList, mappingFn: (String e) => e);
+    filteredList = fs.match(needle);
 
-    print(
-        'N(${dataList.length}) -> ${filteredList.length} = ${watch.elapsed.inMilliseconds} msecs');
+    // print(
+    // 'N(${dataList.length}) -> ${filteredList.length} = ${watch.elapsed.inMilliseconds} msecs');
 
     setState(() {});
   }
@@ -68,7 +68,11 @@ class _FuzzySearchAppState extends State<FuzzySearchApp> {
         if (i >= data.length) {
           return Container();
         }
-        return buildTile(data[i]);
+        if (data[i] is String) {
+          return buildTile(0, data[i] as String);
+        }
+        var result = data[i] as FuzzySearchResult<String>;
+        return buildTile(result.score, result.obj);
       },
     );
 
@@ -94,8 +98,9 @@ class _FuzzySearchAppState extends State<FuzzySearchApp> {
   }
 }
 
-Widget buildTile(String t) {
+Widget buildTile(int score, String t) {
   return ListTile(
+    leading: Text(score.toString()),
     title: Text(t),
   );
 }
