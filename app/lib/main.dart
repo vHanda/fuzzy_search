@@ -28,6 +28,7 @@ class _FuzzySearchAppState extends State<FuzzySearchApp> {
   var textController = TextEditingController();
   var dataList = <String>[];
   var filteredList = <FuzzySearchResult>[];
+  var prevNeedle = "";
 
   @override
   void initState() {
@@ -41,22 +42,22 @@ class _FuzzySearchAppState extends State<FuzzySearchApp> {
   }
 
   void _search(String needle) {
-    print('###############################');
-    print('###############################');
-    print('###############################');
-    print('###############################');
-    print('###############################');
+    if (prevNeedle == needle) {
+      return;
+    }
     var watch = Stopwatch();
     watch.start();
 
-    filteredList.clear();
     var fs = FuzzySearch(dataList, mappingFn: (String e) => e);
-    filteredList = fs.match(needle);
+    var matches = fs.match(needle);
 
-    // print(
-    // 'N(${dataList.length}) -> ${filteredList.length} = ${watch.elapsed.inMilliseconds} msecs');
+    print(
+        'N($needle) -> ${filteredList.length} = ${watch.elapsed.inMilliseconds} msecs');
 
-    setState(() {});
+    setState(() {
+      filteredList = matches;
+      prevNeedle = needle;
+    });
   }
 
   @override
@@ -102,7 +103,6 @@ Widget buildTile(int score, String t, List<int> indexes) {
   var spans = <TextSpan>[];
   for (var i = 0; i < t.length; i++) {
     var char = String.fromCharCode(t.codeUnitAt(i));
-    print('> $char');
     var span = TextSpan(
       text: char,
       style: indexes.contains(i)
