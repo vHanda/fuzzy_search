@@ -51,7 +51,6 @@ Result? fuzzySearch(String base, String needle) {
             yield prevX;
             var maxX = prevX;
             for (var y2 = y - 2; y2 >= 0; y2--) {
-              // print('y2 $y2 maxX $maxX');
               var i = mIndexes.val(y2, maxX);
               assert(i != null);
 

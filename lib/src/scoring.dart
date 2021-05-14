@@ -13,7 +13,10 @@ int scoringFunc({
   required Iterable<int> prevIndexes,
 }) {
   final numUnmatchedChars = (posInHay - prevMatchInHayIndex) - 1;
-  final conseqMatch = numUnmatchedChars == 0;
+
+  // void debugPrint(String reason, int amount, int finalScore) {
+  //   print('   ($matchingChar) $reason: $amount -> $finalScore');
+  // }
 
   // 1 point for maching a char
   var score = 1;
@@ -25,6 +28,8 @@ int scoringFunc({
     // return score;
   } else {
     score -= (numUnmatchedChars * 2);
+    // print('PosInHay: $posInHay prevMatchInHayIndex: $prevMatchInHayIndex');
+    // debugPrint('Unmatched chars', numUnmatchedChars * -2, score);
   }
 
   // If we match at the start of a word, that should count for a lot
@@ -41,10 +46,11 @@ int scoringFunc({
 
   if (isStartOfWord) {
     score += 5;
+    // print('pos in Hay $posInHay');
+    // debugPrint('Start of word', 5, score);
   }
 
   // Each consequtive match should give us a lot
-  /*
   var numConseqMatches = 0;
   var prev = posInHay;
   for (var prevMatchIndex in prevIndexes) {
@@ -55,16 +61,17 @@ int scoringFunc({
       break;
     }
   }
-  score += numConseqMatches;
-  */
-
-  if (conseqMatch) {
-    score += 1;
+  if (numConseqMatches > 0) {
+    if (numConseqMatches == 1) {
+      score += 5;
+    } else {
+      score += numConseqMatches;
+    }
+    // score += numConseqMatches + 5;
+    // debugPrint('Conseq Char', numConseqMatches + 5, score);
   }
+
+  // debugPrint('FinalScore', 0, score);
 
   return score;
 }
-
-// I think we need examples for this
-
-// FIXME: Expose an iterator for all the prev scores and positions? Is this required?

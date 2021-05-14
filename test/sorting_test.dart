@@ -44,6 +44,16 @@ var data = [
     'invite group chat member by e-mail',
     'universalize date format for international users',
   ], 'email', 'invite group chat member by e-mail'),
+  MatchTest([
+    'emwtf ais going onl',
+    'spacebar doesn\'t seem to work in the chat till i start typing again',
+    'invite group chat member by e-mail',
+    'universalize date format for international users',
+  ], 'email', 'invite group chat member by e-mail'),
+  MatchTest([
+    'Wider beta release',
+    'Android/mobile-web app releases',
+  ], 'webrel', 'Android/mobile-web app releases'),
 ];
 
 void main() {
