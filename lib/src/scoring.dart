@@ -48,6 +48,11 @@ int scoringFunc({
     score += 5;
     // print('pos in Hay $posInHay');
     // debugPrint('Start of word', 5, score);
+
+    if (posInHay == 0) {
+      // Start of word and the string starts with this
+      score += 1;
+    }
   }
 
   // Each consequtive match should give us a lot

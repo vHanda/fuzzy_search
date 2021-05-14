@@ -54,6 +54,10 @@ var data = [
     'Wider beta release',
     'Android/mobile-web app releases',
   ], 'webrel', 'Android/mobile-web app releases'),
+  MatchTest([
+    'Email notifications',
+    'Did not get email notifications to test',
+  ], 'email', 'Email notifications'),
 ];
 
 void main() {
