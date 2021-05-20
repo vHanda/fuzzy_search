@@ -33,7 +33,7 @@ class FuzzySearch<T> {
         hay = hay.toLowerCase();
       }
 
-      var r = fuzzySearch(hay, needle);
+      var r = fuzzySearch(hay, needleCleaned);
       if (r == null) {
         continue;
       }
