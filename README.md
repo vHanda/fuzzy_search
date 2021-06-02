@@ -51,5 +51,6 @@ This library implements the algorithm explained in [these wonderful posts](https
   }
 ```
 
+The higher the score, the better the match.
 
 For automatic diacritics and case-removal look at the API in example.
