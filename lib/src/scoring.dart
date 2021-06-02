@@ -76,7 +76,11 @@ int scoringFunc({
     // debugPrint('Conseq Char', numConseqMatches + 5, score);
   }
 
-  // debugPrint('FinalScore', 0, score);
+  // Matching the last char
+  if (posInHay == hay.length - 1 && posInNeedle == needle.length - 1) {
+    score += 2;
+  }
 
+  // debugPrint('FinalScore', 0, score);
   return score;
 }
